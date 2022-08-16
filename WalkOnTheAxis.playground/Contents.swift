@@ -76,3 +76,61 @@ func simpleLoopDistanceWalked(_ N : Int) -> Int {
 }
 
 print(simpleLoopDistanceWalked(2)) //print 5
+
+
+//********************************************************************************************
+//********************************************************************************************
+/*
+ Your Name is Mine
+ 
+ In an attempt to control the rise in population, Archer was asked to come up with a plan. This time he is targeting marriages. Archer, being as intelligent as he is, came up with the following plan:
+ A man with name M is allowed to marry a woman with name W, only if M is a subsequence of W or W is a subsequence of M.
+ A is said to be a subsequence of B, if A can be obtained by deleting some elements of B without changing the order of the remaining elements.
+ Your task is to determine whether a couple is allowed to marry or not, according to Archer's rule.
+ Input
+ The first line contains an integer T, the number of test cases. T test cases follow. Each test case contains two space separated strings M and W.
+ Output
+ For each test case print "YES" if they are allowed to marry, else print "NO".(quotes are meant for clarity, please don't print them)
+ */
+
+
+func yourNameIsMine(_ T : Int,_ names: [String]) {
+    for (_, v) in names.enumerated(){
+        let names = v.split(separator: " ")
+        let name1 = String(names[0])
+        let name2 = String(names[1])
+        let pattern1 = createRegexPattern(name1)
+        let pattern2 = createRegexPattern(name2)
+        if useRegex(for: name1, pattern2) || useRegex(for: name2, pattern1) {
+            print("YES")
+        }else{
+            print("NO")
+        }
+        
+    }
+    
+}
+
+func createRegexPattern(_ str : String) -> String {
+    var pattern = ""
+    
+    for (offset, character) in str.enumerated() {
+        if offset != 0 {
+            pattern.append(".*")
+        }
+        pattern.append(character)
+    }
+   // print(pattern)
+    return pattern
+}
+
+
+func useRegex(for text: String, _ pat : String) -> Bool {
+    let regex = try! NSRegularExpression(pattern: pat, options: [.caseInsensitive])
+    let range = NSRange(location: 0, length: text.count)
+    let matches = regex.matches(in: text, options: [], range: range)
+    return matches.first != nil
+}
+
+
+yourNameIsMine(3, ["john Johanna", "ira ira", "kayla Jayla"]) //Prints YES YES NO
