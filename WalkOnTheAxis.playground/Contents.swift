@@ -27,13 +27,15 @@ import Foundation
 func distanceWalked(_ N : Int) -> Int {
     var distance = 0
     var arr : [Int] = []
-    var left = true
+    var left = false
     
+    //create an array from 0...N
     for i in 0...N {
         arr.append(i)
     }
     
     //while alternating which lights to turn off, keep total distance traveled
+
     while arr.count > 0 {
         distance += abs(arr[0] - arr[arr.count-1])
         if left {
@@ -44,8 +46,33 @@ func distanceWalked(_ N : Int) -> Int {
         left.toggle()
     }
     
-    //return total distance travelled, plus the distance needed to turn off the last light
     return distance + N
 }
 
-print(distanceWalked(2))
+print(distanceWalked(2)) //prints 5
+
+
+func recursiveDistanceWalked(_ N : Int, _ flag: Bool = true) -> Int {
+    if flag {
+        return N + N + recursiveDistanceWalked(N-1, false)
+    }
+    if N == 0 {
+        return N
+    }
+    return N + recursiveDistanceWalked(N-1, false)
+}
+
+print(recursiveDistanceWalked(2)) //prints 5
+
+
+//Simple formula for distance travelled for N+1 number of lights, is
+// N + N + (N-1) + (N-2)+ ... + 0
+func simpleLoopDistanceWalked(_ N : Int) -> Int {
+    var distance = N
+    for i in 0...N {
+        distance += i
+    }
+    return distance
+}
+
+print(simpleLoopDistanceWalked(2)) //print 5
